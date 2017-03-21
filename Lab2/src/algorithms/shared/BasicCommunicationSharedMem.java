@@ -5,6 +5,8 @@
 package algorithms.shared;
 
 import algorithms.Utils;
+
+import javax.rmi.CORBA.Util;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.function.DoubleBinaryOperator;
@@ -51,9 +53,34 @@ public class BasicCommunicationSharedMem{
 
             @Override
             public void run() {
+                int elementsCount = array.length;
+                int epochsCount = 0;
+                while(elementsCount > 0) {
+                    epochsCount++;
+                    elementsCount >>= 1;
+                }
 
-                //TODO
-                
+                for(int i = 0 ; i < epochsCount ; i ++) {
+                    try {
+                        barrier.await();
+                    } catch (InterruptedException | BrokenBarrierException ex) {
+                        Logger.getLogger(BasicCommunicationSharedMem.class.getName())
+                                .log(Level.SEVERE, null, ex);
+                        return;
+                    }
+                    double myVal = array[myIdx];
+                    try {
+                        barrier.await();
+                    } catch (InterruptedException | BrokenBarrierException ex) {
+                        Logger.getLogger(BasicCommunicationSharedMem.class.getName())
+                                .log(Level.SEVERE, null, ex);
+                        return;
+                    }
+                    int sendToIdx = myIdx + (1 << i);
+                    if(sendToIdx < array.length) {
+                        array[sendToIdx] += myVal;
+                    }
+                }
             }
         }
         
@@ -61,7 +88,8 @@ public class BasicCommunicationSharedMem{
         int nThreads = array.length - 1;
         CyclicBarrier barrier = new CyclicBarrier(nThreads);
         Thread[] workers = new Thread[nThreads];
-        
+
+        System.out.println(nThreads);
         //start all the threads
         for(int i = 0; i<nThreads; ++i){
             workers[i] = new Thread(new Scanner(i, barrier));
@@ -77,6 +105,7 @@ public class BasicCommunicationSharedMem{
                         .log(Level.SEVERE, null, ex);
             }
         }
+        System.gc();
     }
     
 }

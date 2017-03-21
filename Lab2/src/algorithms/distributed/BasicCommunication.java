@@ -132,25 +132,14 @@ public class BasicCommunication {
 
             for (int i = secondPhaseEpochs - 1; i >= 0; i--) {
                 if (sendsToMake > i) {
-                    System.out.println("Node " + myIdx + " sending data to " + (myIdx + (1 << i)));
                     node.sendMyData(myIdx + (1 << i));
                 }
                 else if (sendsToMake == i && myIdx >= (1 << i+1)) {
-                    System.out.println("Node " + myIdx + " receiving data ");
                     double[] receivedData = node.receive().getData();
                     double[] myData = node.getMyData();
                     myData[0] = op.applyAsDouble(myData[0], receivedData[0]);
                     node.setMyData(myData);
-                    System.out.println("Node " + myIdx + " received data" + receivedData[0]);
                 }
-//                if (((1 << i) & myIdx) > 0 && myIdx + (1 << i) < nodesCount) {
-//                    node.sendMyData(myIdx + (1 << i));
-//                } else if (((1 << i) & myIdx) == 0 && myIdx - (1 << i) >= 0) {
-//                    double[] receivedData = node.receive().getData();
-//                    double[] myData = node.getMyData();
-//                    myData[0] = op.applyAsDouble(myData[0], receivedData[0]);
-//                    node.setMyData(myData);
-//                }
             }
         }
 

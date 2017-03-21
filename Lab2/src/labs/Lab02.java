@@ -21,8 +21,8 @@ public class Lab02 extends BaseLabMixed{
     
     boolean verboseCommunication = false;
     boolean validateResults = true;
-    boolean printProcessingTime = true;
-    boolean printStatusBeforeAndAfter = true;
+    boolean printProcessingTime = false;
+    boolean printStatusBeforeAndAfter = false;
     
     
     @Override
@@ -40,8 +40,8 @@ public class Lab02 extends BaseLabMixed{
                 validateResults, printProcessingTime, printStatusBeforeAndAfter);
         
         //Uncomment this later:
-        testDistributedAlgorithms();
-//        testSharedAlgorithms();
+//        testDistributedAlgorithms();
+        testSharedAlgorithms();
     }
     
     
