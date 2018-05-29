@@ -40,7 +40,7 @@ public class Lab02 extends BaseLabMixed{
                 validateResults, printProcessingTime, printStatusBeforeAndAfter);
         
         //Uncomment this later:
-//        testDistributedAlgorithms();
+        testDistributedAlgorithms();
         testSharedAlgorithms();
     }
     

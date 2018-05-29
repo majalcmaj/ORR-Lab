@@ -21,9 +21,6 @@ public class SortSM {
 
     private static void serialQuicksort(double[] array, int sPos, int ePos){
         if(sPos < ePos){
-            try {
-                Thread.sleep(TIME_SLEEP);
-            }catch(Exception ex) {}
             int partitionPoint = partitionPhase(array, sPos, ePos);
             
             //Recurential calls
@@ -70,9 +67,6 @@ public class SortSM {
 
         @Override
         protected void compute() {
-            try {
-                Thread.sleep(TIME_SLEEP);
-            }catch(Exception ex) {}
             if (ePos - sPos < THRESHOLD)
                 serialQuicksort(array, sPos, ePos);
             else {
